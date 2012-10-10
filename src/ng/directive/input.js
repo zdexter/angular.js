@@ -627,8 +627,8 @@ function emailInputType(scope, element, attr, ctrl, $sniffer, $browser) {
   ctrl.$parsers.push(emailValidator);
 }
 
-function fileInputType(scope, element, attr, ctrl) {
-  element.bind('change', function() {
+function fileInputType(scope, element, attr, ctrl, $sniffer, $window) {
+  var listener = function() {
     scope.$apply(function() {
       var files = element[0].files,
           isValid = true;
@@ -651,7 +651,8 @@ function fileInputType(scope, element, attr, ctrl) {
       if (isValid) viewValue = attr.multiple ? files : files[0];
       ctrl.$setViewValue(viewValue);
     });
-  });
+  }
+  if (isDefined($window.FormData)) element.bind('change', listener);
 }
 
 function radioInputType(scope, element, attr, ctrl) {
